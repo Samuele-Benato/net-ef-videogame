@@ -68,7 +68,7 @@
                     DateTime updatedAt = DateTime.Now;
                     int softwarehouseid = 1;
 
-                    VideogameManagement.InsertVideogame(name, overview, releaseDate, createdAt, updatedAt, softwarehouseid);
+                    //VideogameManagement.InsertVideogame(name, overview, releaseDate, createdAt, updatedAt, softwarehouseid);
                     Console.WriteLine("Aggiunta avvenuta con successo!");
                 }
                 catch (Exception ex)
@@ -88,7 +88,9 @@
                     {
                         throw new FormatException("L'ID deve essere un numero intero.");
                     }
-                    VideogameManagement.GetVideogameById(id);
+
+                    string result = VideogameManagement.GetVideogameById(id);
+                    Console.WriteLine(result);
                 }
                 catch (FormatException ex)
                 {
@@ -107,7 +109,8 @@
                     {
                         throw new ArgumentException("la descrizione non può essere vuota.");
                     }
-                    VideogameManagement.GetVideogameByInput(input);
+                    string result = VideogameManagement.GetVideogameByInput(input);
+                    Console.WriteLine(result);
                 }
                 catch (FormatException ex)
                 {

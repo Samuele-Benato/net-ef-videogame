@@ -11,14 +11,14 @@ namespace net_ef_videogame
     [Table("software_house")]
     public class SoftwareHouse
     {
-        [Key] public int SoftwareHouseId { get; set; }
+        [Key] 
+        public int SoftwareHouseId { get; set; }
         public string Name { get; set; }
         public List<Videogame> Videogames { get; set; }
 
 
-        public SoftwareHouse(int id, string name)
+        public SoftwareHouse(string name)
         {
-            SoftwareHouseId = id;
             Name = name;
         }
     }

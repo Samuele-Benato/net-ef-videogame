@@ -9,10 +9,10 @@ namespace net_ef_videogame
 {
     public static class VideogameManagement
     {
-        const string CONNECT_DATABASE = "Server=localhost;Database=db-videogames;Trusted_Connection=True";
-        public static void InsertVideogame(int id, string name, string overview, DateTime relesedate, DateTime createdat, DateTime updatedat, int softwarehouseid)
+        const string CONNECT_DATABASE = "Server=localhost;Database=db-newvideogames;Trusted_Connection=True";
+        public static void InsertVideogame( string name, string overview, DateTime relesedate, DateTime createdat, DateTime updatedat, int softwarehouseid, SoftwareHouse softwarehouse)
         {
-            Videogame videogame = new Videogame(id, name, overview, relesedate, createdat, updatedat, softwarehouseid);
+            Videogame videogame = new Videogame(name, overview, relesedate, createdat, updatedat, softwarehouseid, softwarehouse);
 
             string query = "INSERT INTO videogames(name, overview, release_date, created_at, updated_at, software_house_id) VALUES (@name, @overview, @relesedate, @createdat, @updatedat, @softwarehouseid)";
 
@@ -40,7 +40,7 @@ namespace net_ef_videogame
             }
         }
 
-        public static void GetVideogameById(int id)
+        public static string GetVideogameById(int id)
         {
             string query = "SELECT * FROM videogames WHERE id = @id";
             SqlConnection connect = new SqlConnection(CONNECT_DATABASE);
@@ -54,12 +54,13 @@ namespace net_ef_videogame
 
                 while (reader.Read())
                 {
-                    Console.WriteLine($"ID: {reader["id"]}, Name: {reader["name"]}, Overview: {reader["overview"]}");
+                    return $"ID: {reader["id"]}, Name: {reader["name"]}, Overview: {reader["overview"]}";
                 }
+                return "Videogame not found.";
             }
             catch (Exception e)
             {
-                Console.Write(e.ToString());
+                return e.ToString();
             }
             finally
             {
@@ -67,7 +68,7 @@ namespace net_ef_videogame
             }
         }
 
-        public static void GetVideogameByInput(string input)
+        public static string GetVideogameByInput(string input)
         {
             string query = "SELECT * FROM videogames WHERE name LIKE @input OR overview LIKE @input";
             //string query = "SELECT * FROM videogames WHERE CAST(name AS NVARCHAR(MAX)) = @input OR CAST(overview AS NVARCHAR(MAX)) = @input";
@@ -82,12 +83,13 @@ namespace net_ef_videogame
 
                 while (reader.Read())
                 {
-                    Console.WriteLine($"ID: {reader["id"]}, Name: {reader["name"]}, Overview: {reader["overview"]}");
+                    return $"ID: {reader["id"]}, Name: {reader["name"]}, Overview: {reader["overview"]}";
                 }
+                return "Videogame not found";
             }
             catch (Exception e)
             {
-                Console.Write(e.ToString());
+                return e.ToString();
             }
             finally
             {

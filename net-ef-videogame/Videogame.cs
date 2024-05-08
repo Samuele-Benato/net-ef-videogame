@@ -12,7 +12,8 @@ namespace net_ef_videogame
     [Table("videogame")]
     public class Videogame
     {
-        [Key] public int VideogameId { get; set; }
+        [Key] 
+        public int VideogameId { get; set; }
         public string Name { get; set; }
         public string Overview { get; set; }
         public DateTime ReleaseDate { get; set; }
@@ -21,15 +22,16 @@ namespace net_ef_videogame
         public int SoftwareHouseId { get; set; }
         public SoftwareHouse SoftwareHouse { get; set; }
 
-        public Videogame(int id ,string name, string overview, DateTime relesedate, DateTime createdat, DateTime updateat, int softwarehouseid = 1)
+        public Videogame() { }
+        public Videogame(string name, string overview, DateTime relesedate, DateTime createdat, DateTime updateat, int softwarehouseid, SoftwareHouse softwarehouse)
         {
-            VideogameId = id;
             Name = name;
             Overview = overview;
             ReleaseDate = relesedate;
             CreatedAt = createdat;
             UpdatedAt = updateat;
             SoftwareHouseId = softwarehouseid;
+            SoftwareHouse = softwarehouse;
         }
     }
 }
