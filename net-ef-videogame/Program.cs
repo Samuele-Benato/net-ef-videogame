@@ -70,7 +70,15 @@
 
                     DateTime createdAt = DateTime.Now;
                     DateTime updatedAt = DateTime.Now;
-                    int softwarehouseid = 1;
+
+                    Console.WriteLine("Inserisci l'ID della softwarehouse:");
+                    VideogameManagement.PrintAllSoftwareHouses();
+                    if (!int.TryParse(Console.ReadLine(), out int id))
+                    {
+                        throw new FormatException("L'ID deve essere un numero intero.");
+                    }
+
+                    SoftwareHouse softwarehouse = VideogameManagement.GetSofwareHouseById(id);
 
                     Videogame videogame = new Videogame
                     {
@@ -79,7 +87,8 @@
                         ReleaseDate = releaseDate,
                         CreatedAt = createdAt,
                         UpdatedAt = updatedAt,
-                        SoftwareHouseId = softwarehouseid
+                        SoftwareHouseId = id, 
+                        SoftwareHouse = softwarehouse
                     };
 
                     VideogameManagement.InsertVideogame(videogame);
@@ -173,6 +182,8 @@
                     Console.WriteLine(ex.Message);
                 }
             }
+
+            
         }
     }
 }

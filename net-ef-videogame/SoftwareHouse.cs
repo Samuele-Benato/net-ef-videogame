@@ -17,7 +17,11 @@ namespace net_ef_videogame
         public List<Videogame> Videogames { get; set; }
 
 
-        public SoftwareHouse(string name)
+        public SoftwareHouse()
+        {
+            Videogames = new List<Videogame>();
+        }
+        public SoftwareHouse(string name) : this()
         {
             Name = name;
         }
