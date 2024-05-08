@@ -10,25 +10,21 @@ namespace net_ef_videogame
     public static class VideogameManagement
     {
         const string CONNECT_DATABASE = "Server=localhost;Database=db-newvideogames;Trusted_Connection=True";
-        public static void InsertVideogame( string name, string overview, DateTime relesedate, DateTime createdat, DateTime updatedat, int softwarehouseid, SoftwareHouse softwarehouse)
+        public static void InsertVideogame( Videogame videogame)
         {
-            Videogame videogame = new Videogame(name, overview, relesedate, createdat, updatedat, softwarehouseid, softwarehouse);
+            string query = "INSERT INTO videogames(name, overview, release_date, created_at, updated_at, software_house_id) VALUES (@name, @overview, @releaseDate, @createdAt, @updatedAt, @softwareHouseId)";
 
-            string query = "INSERT INTO videogames(name, overview, release_date, created_at, updated_at, software_house_id) VALUES (@name, @overview, @relesedate, @createdat, @updatedat, @softwarehouseid)";
-
-            SqlConnection connect = new SqlConnection(CONNECT_DATABASE);
-            try
+            using (SqlConnection connect = new SqlConnection(CONNECT_DATABASE))
+                try
             {
-                connect.Open();
-                SqlCommand cmd = new SqlCommand(query, connect);
-                cmd.Parameters.Add(new SqlParameter("@name", name));
-                cmd.Parameters.Add(new SqlParameter("@overview", overview));
-                cmd.Parameters.Add(new SqlParameter("@relesedate", relesedate));
-                cmd.Parameters.Add(new SqlParameter("@createdat", createdat));
-                cmd.Parameters.Add(new SqlParameter("@updatedat", updatedat));
-                cmd.Parameters.Add(new SqlParameter("@softwarehouseid", softwarehouseid));
-
-                cmd.ExecuteNonQuery();
+                    SqlCommand cmd = new SqlCommand(query, connect);
+                    cmd.Parameters.Add(new SqlParameter("@name", videogame.Name));
+                    cmd.Parameters.Add(new SqlParameter("@overview", videogame.Overview));
+                    cmd.Parameters.Add(new SqlParameter("@releaseDate", videogame.ReleaseDate));
+                    cmd.Parameters.Add(new SqlParameter("@createdAt", videogame.CreatedAt));
+                    cmd.Parameters.Add(new SqlParameter("@updatedAt", videogame.UpdatedAt));
+                    cmd.Parameters.Add(new SqlParameter("@softwareHouseId", videogame.SoftwareHouseId));
+                    cmd.ExecuteNonQuery();
             }
             catch (Exception e)
             {

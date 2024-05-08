@@ -68,7 +68,17 @@
                     DateTime updatedAt = DateTime.Now;
                     int softwarehouseid = 1;
 
-                    //VideogameManagement.InsertVideogame(name, overview, releaseDate, createdAt, updatedAt, softwarehouseid);
+                    Videogame videogame = new Videogame
+                    {
+                        Name = name,
+                        Overview = overview,
+                        ReleaseDate = releaseDate,
+                        CreatedAt = createdAt,
+                        UpdatedAt = updatedAt,
+                        SoftwareHouseId = softwarehouseid
+                    };
+
+                    VideogameManagement.InsertVideogame(videogame);
                     Console.WriteLine("Aggiunta avvenuta con successo!");
                 }
                 catch (Exception ex)
