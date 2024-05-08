@@ -12,106 +12,70 @@ namespace net_ef_videogame
         const string CONNECT_DATABASE = "Server=localhost;Database=db-newvideogames;Trusted_Connection=True";
         public static void InsertVideogame( Videogame videogame)
         {
-            string query = "INSERT INTO videogames(name, overview, release_date, created_at, updated_at, software_house_id) VALUES (@name, @overview, @releaseDate, @createdAt, @updatedAt, @softwareHouseId)";
-
-            using (SqlConnection connect = new SqlConnection(CONNECT_DATABASE))
-                try
+            using (var db = new VideogameContext())
             {
-                    SqlCommand cmd = new SqlCommand(query, connect);
-                    cmd.Parameters.Add(new SqlParameter("@name", videogame.Name));
-                    cmd.Parameters.Add(new SqlParameter("@overview", videogame.Overview));
-                    cmd.Parameters.Add(new SqlParameter("@releaseDate", videogame.ReleaseDate));
-                    cmd.Parameters.Add(new SqlParameter("@createdAt", videogame.CreatedAt));
-                    cmd.Parameters.Add(new SqlParameter("@updatedAt", videogame.UpdatedAt));
-                    cmd.Parameters.Add(new SqlParameter("@softwareHouseId", videogame.SoftwareHouseId));
-                    cmd.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                Console.Write(e.ToString());
-            }
-            finally
-            {
-                connect.Close();
+                db.Videogames.Add(videogame);
+                db.SaveChanges();
             }
         }
 
         public static string GetVideogameById(int id)
         {
-            string query = "SELECT * FROM videogames WHERE id = @id";
-            SqlConnection connect = new SqlConnection(CONNECT_DATABASE);
-
-            try
+            using (var db = new VideogameContext())
             {
-                connect.Open();
-                SqlCommand cmd = new SqlCommand(query, connect);
-                cmd.Parameters.Add(new SqlParameter("@id", id));
-                SqlDataReader reader = cmd.ExecuteReader();
+                var videogame = db.Videogames.FirstOrDefault(v => v.VideogameId == id);
 
-                while (reader.Read())
+                if (videogame != null)
                 {
-                    return $"ID: {reader["id"]}, Name: {reader["name"]}, Overview: {reader["overview"]}";
+                    return $"ID: {videogame.VideogameId}, Name: {videogame.Name}, Overview: {videogame.Overview}";
                 }
-                return "Videogame not found.";
-            }
-            catch (Exception e)
-            {
-                return e.ToString();
-            }
-            finally
-            {
-                connect.Close();
+                else
+                {
+                    return "Videogame not found.";
+                }
             }
         }
 
         public static string GetVideogameByInput(string input)
         {
-            string query = "SELECT * FROM videogames WHERE name LIKE @input OR overview LIKE @input";
-            //string query = "SELECT * FROM videogames WHERE CAST(name AS NVARCHAR(MAX)) = @input OR CAST(overview AS NVARCHAR(MAX)) = @input";
-            SqlConnection connect = new SqlConnection(CONNECT_DATABASE);
-
-            try
+            using (var db = new VideogameContext())
             {
-                connect.Open();
-                SqlCommand cmd = new SqlCommand(query, connect);
-                cmd.Parameters.Add(new SqlParameter("@input", "%" + input + "%"));
-                SqlDataReader reader = cmd.ExecuteReader();
+                var videogame = db.Videogames.FirstOrDefault(v => v.Name.Contains(input) || v.Overview.Contains(input));
 
-                while (reader.Read())
+                if (videogame != null)
                 {
-                    return $"ID: {reader["id"]}, Name: {reader["name"]}, Overview: {reader["overview"]}";
+                    return $"ID: {videogame.VideogameId}, Name: {videogame.Name}, Overview: {videogame.Overview}";
                 }
-                return "Videogame not found";
+                else
+                {
+                    return "Videogame not found";
+                }
             }
-            catch (Exception e)
+        }
+        public static void DeleteVideogame(string name)
+        {
+            using (var db = new VideogameContext())
             {
-                return e.ToString();
-            }
-            finally
-            {
-                connect.Close();
+                var videogame = db.Videogames.FirstOrDefault(v => v.Name == name);
+
+                if (videogame != null)
+                {
+                    db.Videogames.Remove(videogame);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("Videogame not found");
+                }
             }
         }
 
-        public static void DeleteVideogame(string name)
+        public static void InsertSoftwareHouse(SoftwareHouse softwarehouse)
         {
-            string query = "DELETE FROM videogames WHERE name = @name";
-            SqlConnection connect = new SqlConnection(CONNECT_DATABASE);
-
-            try
+            using (var db = new VideogameContext())
             {
-                connect.Open();
-                SqlCommand cmd = new SqlCommand(query, connect);
-                cmd.Parameters.Add(new SqlParameter("@name", name));
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                Console.Write(e.ToString());
-            }
-            finally
-            {
-                connect.Close();
+                db.SoftwareHouses.Add(softwarehouse);
+                db.SaveChanges();
             }
         }
     }

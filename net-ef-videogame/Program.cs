@@ -9,7 +9,8 @@
             Console.WriteLine("2. Ricerca un videogioco per ID");
             Console.WriteLine("3. Ricerca un videogioco per parola");
             Console.WriteLine("4. Elimina un videogioco");
-            Console.WriteLine("5. Esci");
+            Console.WriteLine("5. Inserisci una software house");
+            Console.WriteLine("6. Esci");
 
             string choice = Console.ReadLine();
 
@@ -29,6 +30,9 @@
                     DeleteVideogame();
                     break;
                 case "5":
+                    InsertSoftwareHouse();
+                    break;
+                case "6":
                     Console.WriteLine("Programma chiuso.");
                     break;
                 default:
@@ -140,6 +144,29 @@
                     }
                     VideogameManagement.DeleteVideogame(name);
                     Console.WriteLine("Eliminazione avvenuta con successo!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            static void InsertSoftwareHouse()
+            {
+                try
+                {
+                    Console.Write("1. Inserisci il nome della software house: ");
+                    string name = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        throw new ArgumentException("Il nome della software house non può essere vuoto.");
+                    }
+
+                    SoftwareHouse softwareHouse = new SoftwareHouse(name);
+
+                    VideogameManagement.InsertSoftwareHouse(softwareHouse);
+                    Console.WriteLine("Software house aggiunta con successo!");
                 }
                 catch (Exception ex)
                 {
